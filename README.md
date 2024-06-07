@@ -30,5 +30,3 @@ To get started with this project, you will need to have the fallowing installed 
 To build and run project, fallow these steps:
 * Clone the repository: 'git clone https://github.com/PawelKowalskiSD/Demo-Transfer-File.git'
 * Navigate to the project directory: cd Demo-Transfer-File
-* Build the project: gradle build
-* Run the project: ./gradlew bootRun

@@ -6,12 +6,12 @@ import java.util.Scanner;
 
 public class UploadClient {
     private Socket socket;
-    private DataOutputStream out;
+    private DataOutputStream dataOutputStream;
 
     public UploadClient(String host, int port) {
         try {
             socket = new Socket(host, port);
-            out = new DataOutputStream(socket.getOutputStream());
+            dataOutputStream = new DataOutputStream(socket.getOutputStream());
             sendFile();
         } catch (IOException e) {
             e.printStackTrace();
@@ -27,18 +27,18 @@ public class UploadClient {
         File file = new File(filePath);
 
         if (file.exists()) {
-            out.writeUTF("upload");
-            out.writeUTF(file.getName());
-            out.writeLong(file.length());
+            dataOutputStream.writeUTF("upload");
+            dataOutputStream.writeUTF(file.getName());
+            dataOutputStream.writeLong(file.length());
 
             try (FileInputStream fis = new FileInputStream(file);
                  BufferedInputStream bis = new BufferedInputStream(fis)) {
                 byte[] buffer = new byte[8192];
                 int bytesRead;
                 while ((bytesRead = bis.read(buffer)) != -1) {
-                    out.write(buffer, 0, bytesRead);
+                    dataOutputStream.write(buffer, 0, bytesRead);
                 }
-                out.flush();
+                dataOutputStream.flush();
             }
             System.out.println("The file has been sent.");
         } else {
@@ -48,7 +48,7 @@ public class UploadClient {
 
     private void closeConnections() {
         try {
-            if (out != null) out.close();
+            if (dataOutputStream != null) dataOutputStream.close();
             if (socket != null) socket.close();
         } catch (IOException e) {
             e.printStackTrace();

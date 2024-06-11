@@ -14,7 +14,7 @@ public class GenerateFile {
         this.name = name;
     }
 
-    public void createFile() {
+    public String createFile() throws IOException {
         try (FileOutputStream createFile = new FileOutputStream(name)) {
             byte[] buffer = new byte[64 * 1024];
             long bytesWritten = 0;
@@ -24,14 +24,23 @@ public class GenerateFile {
                 createFile.write(buffer);
                 bytesWritten += buffer.length;
             }
-            System.out.println("generate file: " + name + " with size: " + size + " bytes");
+            return "generate file: " + name + " with size: " + size + " bytes";
         } catch (IOException e) {
             e.printStackTrace();
         }
+        throw new IOException();
     }
 
-    public static void main(String[] args) {
-        GenerateFile generateFile = new GenerateFile(1_073_741_824, RESOURCES + "test.txt");
+    public long getSize() {
+        return size;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public static void main(String[] args) throws IOException {
+        GenerateFile generateFile = new GenerateFile(1_073_741_824, RESOURCES + "test2.txt");
         generateFile.createFile();
     }
 }
